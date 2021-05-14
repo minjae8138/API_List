@@ -2,12 +2,6 @@ import sys
 import argparse
 import requests
 from PIL import Image, ImageFilter
-import pandas as pd
-import numpy as np
-import math
-import os
-print(os.getcwd())
-
 
 API_URL = 'https://dapi.kakao.com/v2/vision/face/detect'
 MYAPP_KEY = 'MYAPP_KEY '
@@ -24,9 +18,6 @@ def detect_face(filename):
         print(str(e))
         sys.exit(0)
 
-    return image
-
-
 def mosaic(filename, detection_result):
     image = Image.open(filename)
 
@@ -39,27 +30,17 @@ def mosaic(filename, detection_result):
         box = box.resize((20,20), Image.NEAREST).resize((w,h), Image.NEAREST)
         image.paste(box, (x,y,x+w, y+h))
 
+    return image
+
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Mosaic faces.')
+    parser.add_argument('image_file', type=str, nargs='?', default="./images/maskmask.jpg",
+                        help='image file to hide faces')
 
-    path_dir = './images'
-    file_list = os.listdir(path_dir)
+    args = parser.parse_args()
 
-    face_which_list = []        # 최종 산출물이 담길 리스트
-    for l in file_list :
-        parser.add_argument('image_file', type=str, nargs='?', default="./images/{}".format(l),
-                            help='image file to hide faces')
-        print(l)
-        args = parser.parse_args()
-        detection_result = detect_face(args.image_file)
-        face_which_list.append(detection_result["result"])
-
-    # image = mosaic(args.image_file, detection_result)
-    print(face_which_list)
-
-    # image.show()
-
-
-
-
+    detection_result = detect_face(args.image_file)
+    image = mosaic(args.image_file, detection_result)
+    image.show()

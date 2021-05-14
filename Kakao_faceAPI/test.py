@@ -10,7 +10,7 @@ print(os.getcwd())
 
 
 API_URL = 'https://dapi.kakao.com/v2/vision/face/detect'
-MYAPP_KEY = '5245d6bac6a54cae198e9f4c1d4b2019'
+MYAPP_KEY = 'MYAPP_KEY '
 
 def detect_face(filename):
     headers = {'Authorization': 'KakaoAK {}'.format(MYAPP_KEY)}
@@ -55,10 +55,10 @@ if __name__ == "__main__":
         detection_result = detect_face(args.image_file)
         face_which_list.append(detection_result["result"])
         print(detection_result)
-    # image = mosaic(args.image_file, detection_result)
+    image = mosaic(args.image_file, detection_result)
     # print(face_which_list)
 
-    # image.show()
+    image.show()
 
 
 
